@@ -25,6 +25,7 @@ jobs:
         run: |
           npm install
           npm run build --if-present
+          mv .next/static .next/standalone/.next/static
           npm run test --if-present
 
       - name: Zip artifact for deployment
