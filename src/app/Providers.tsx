@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 
 const renderer = createDOMRenderer();
 
-export function Providers({ children }) {
+export function Providers({ children }: {children: React.ReactNode}) {
     // Declare a state variable named 'hasMounted' and a function named 'setHasMounted' to update it.
     const [hasMounted, setHasMounted] = useState(false);
 
