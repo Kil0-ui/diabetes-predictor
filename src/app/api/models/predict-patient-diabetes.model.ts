@@ -1,6 +1,6 @@
 export default interface IPredictPatientDiabetesRequestModel {
-    pregnancies: number;
-    glucose: number;
-    bmi: number;
-    age: number;
+    pregnancies?: number;
+    glucose?: number;
+    bmi?: number;
+    age?: number;
 }
