@@ -1,11 +1,12 @@
 
 "use client"
 import { Button } from "@fluentui/react-components";
-import { horizontalStack } from "./styles";
+import { pageWrapper, verticalStack } from "./styles";
 
 export default function Home() {
+
     return (
-        <div className={horizontalStack().root}>
+        <div className={`${verticalStack().root} ${pageWrapper().root}`}>
             <Button>test</Button>
             <Button>test</Button>
         </div>

@@ -1,11 +1,11 @@
 'use client'
 
-import { RendererProvider, createDOMRenderer, SSRProvider, FluentProvider, webLightTheme } from "@fluentui/react-components";
+import { RendererProvider, createDOMRenderer, SSRProvider, FluentProvider, webLightTheme, webDarkTheme } from "@fluentui/react-components";
 import React, { useState, useEffect } from "react";
 
 const renderer = createDOMRenderer();
 
-export function Providers({ children }: {children: React.ReactNode}) {
+export function Providers({ children, theme }: { children: React.ReactNode, theme: "light" | "dark" }) {
     // Declare a state variable named 'hasMounted' and a function named 'setHasMounted' to update it.
     const [hasMounted, setHasMounted] = useState(false);
 
@@ -23,10 +23,10 @@ export function Providers({ children }: {children: React.ReactNode}) {
     return (
         <RendererProvider renderer={renderer || createDOMRenderer()}>
             <SSRProvider>
-                <FluentProvider theme={webLightTheme}>
+                <FluentProvider style={{ height: '100%' }} theme={theme === "dark" ? webDarkTheme : webLightTheme}>
                     {children}
                 </FluentProvider>
             </SSRProvider>
-        </RendererProvider>
+        </RendererProvider >
     );
 }
