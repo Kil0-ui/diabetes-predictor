@@ -2,11 +2,10 @@
 
 import { RendererProvider, createDOMRenderer, SSRProvider, FluentProvider, webLightTheme, webDarkTheme } from "@fluentui/react-components";
 import React, { useState, useEffect } from "react";
-import { ThemeMode } from "./LayoutWrapper";
 
 const renderer = createDOMRenderer();
 
-export function Providers({ children, theme }: { children: React.ReactNode, theme: ThemeMode }) {
+export function Providers({ children, theme }: { children: React.ReactNode, theme: "light" | "dark" }) {
     // Declare a state variable named 'hasMounted' and a function named 'setHasMounted' to update it.
     const [hasMounted, setHasMounted] = useState(false);
 
