@@ -1,6 +1,7 @@
-import { makeStyles, Title1, Button, Title2, Divider } from "@fluentui/react-components"
+import { makeStyles, Button, Title2, Divider, Tooltip } from "@fluentui/react-components"
 import { WeatherSunnyRegular, WeatherMoonRegular } from "@fluentui/react-icons"
 import Image from "next/image"
+import { ThemeMode } from "../LayoutWrapper"
 
 const useNavbarStyles = makeStyles({
     root: {
@@ -31,8 +32,8 @@ const useLogoNavBarStyles = makeStyles({
 })
 
 type NavbarProps = {
-    theme: "light" | "dark";
-    setTheme: (theme: "light" | "dark") => void;
+    theme: ThemeMode;
+    setTheme: (theme: ThemeMode) => void;
 }
 
 export default function Navbar({ theme, setTheme }: NavbarProps) {
@@ -55,16 +56,18 @@ export default function Navbar({ theme, setTheme }: NavbarProps) {
                     <Title2>Diabetes Predictor Application</Title2>
                 </div>
                 <div className={navBarRightStyles.root}>
-                    <Button
-                        onClick={() => {
-                            if (theme === "light") {
-                                setTheme("dark")
-                            } else {
-                                setTheme("light")
-                            }
-                        }}
-                        icon={theme === "dark" ? <WeatherMoonRegular /> : <WeatherSunnyRegular />}
-                    />
+                    <Tooltip relationship="label" content={theme === 'light' ? "Toggle Dark Theme" : "Toggle Light Theme"}>
+                        <Button
+                            onClick={() => {
+                                if (theme === "light") {
+                                    setTheme("dark")
+                                } else {
+                                    setTheme("light")
+                                }
+                            }}
+                            icon={theme === "dark" ? <WeatherMoonRegular /> : <WeatherSunnyRegular />}
+                        />
+                    </Tooltip>
                 </div>
             </div>
             <Divider />
