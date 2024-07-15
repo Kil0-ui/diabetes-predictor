@@ -25,8 +25,10 @@ export default function Home() {
     const [predictionResponse, setPredictionResponse] = useState<PredictPatientDiabetesResponse>();
     const isLoadingPrediction = loadingPrediction === LoadingStatus.Pending;
 
-    function _setPatientData(path: keyof IPredictPatientDiabetesRequestModel, value: number | null | undefined) {
-        setPatientData({ ...patientData, [path]: value });
+    function _setPatientData(path: keyof IPredictPatientDiabetesRequestModel, value: number | string | null | undefined) {
+        const newValue = typeof value === "string" ? isNaN(+value) ? patientData[path] : +value : value;
+
+        setPatientData({ ...patientData, [path]: newValue });
     }
 
     function _clearAllPatientData() {
@@ -52,8 +54,8 @@ export default function Home() {
         <div className={`${verticalStack().root} ${pageWrapper().root}`}>
             <Field label="Pregnancies">
                 <SpinButton
-                    onChange={(_, { value }) => {
-                        _setPatientData("pregnancies", value)
+                    onChange={(_, { value, displayValue }) => {
+                        _setPatientData("pregnancies", value ?? displayValue)
                     }}
                     value={patientData?.pregnancies ?? 0}
                     min={0}
@@ -62,8 +64,8 @@ export default function Home() {
             </Field>
             <Field label="Glucose Level">
                 <SpinButton
-                    onChange={(_, { value }) => {
-                        _setPatientData("glucose", value)
+                    onChange={(_, { value, displayValue }) => {
+                        _setPatientData("glucose", value ?? displayValue)
                     }}
                     value={patientData?.glucose ?? 0}
                     min={0}
@@ -72,8 +74,8 @@ export default function Home() {
             </Field>
             <Field label="BMI (Body Mass Index)">
                 <SpinButton
-                    onChange={(_, { value }) => {
-                        _setPatientData("bmi", value)
+                    onChange={(_, { value, displayValue }) => {
+                        _setPatientData("bmi", value ?? displayValue)
                     }}
                     value={patientData?.bmi ?? 0}
                     precision={1}
@@ -83,8 +85,8 @@ export default function Home() {
             </Field>
             <Field label="Age">
                 <SpinButton
-                    onChange={(_, { value }) => {
-                        _setPatientData("age", value)
+                    onChange={(_, { value, displayValue }) => {
+                        _setPatientData("age", value ?? displayValue)
                     }}
                     value={patientData?.age ?? 0}
                     min={0}
@@ -108,7 +110,7 @@ export default function Home() {
                     </Button>
                 </div>
             </div>
-            {predictionResponse}
+            {JSON.stringify(predictionResponse)}
         </div>
     );
 }
