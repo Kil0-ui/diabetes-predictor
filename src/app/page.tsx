@@ -92,6 +92,7 @@ export default function Home() {
 
     function _clearAllPatientData() {
         setPatientData({});
+        setPredictionResponse(undefined);
         cleanupErrors();
     }
 
