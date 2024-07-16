@@ -102,10 +102,10 @@ export default function Home() {
     async function _getPrediction() {
         let retries = PREDICTION_API_RETRIES;
 
-        while (retries)
-            try {
-                setLoadingPrediction(LoadingStatus.Pending)
+        setLoadingPrediction(LoadingStatus.Pending)
 
+        while (retries) {
+            try {
                 const response = await predictDiabetesForPatient(patientData);
 
                 setLoadingPrediction(LoadingStatus.Completed)
@@ -114,12 +114,14 @@ export default function Home() {
                     setPredictionResponse(response);
                 return;
             } catch (e) {
-                setLoadingPrediction(LoadingStatus.Failed);
+                console.error("Failed to get diabetes prediction", e)
             }
+            retries--;
+            //Wait 2 seconds before retrying request.
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+        }
 
-        retries--;
-        //Wait 2 seconds before retrying request.
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setLoadingPrediction(LoadingStatus.Failed);
     }
 
     return (
