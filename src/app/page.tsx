@@ -48,6 +48,9 @@ function useRequiredValidation({ submit, validationItems }: { submit: () => unkn
     return { errorFields, onSubmit, cleanupErrors }
 }
 
+//Number of retries for prediction request
+const PREDICTION_API_RETRIES = 5;
+
 export default function Home() {
     const [patientData, setPatientData] = useState<IPredictPatientDiabetesRequestModel>({
         pregnancies: 0,
@@ -97,18 +100,26 @@ export default function Home() {
     }
 
     async function _getPrediction() {
-        try {
-            setLoadingPrediction(LoadingStatus.Pending)
+        let retries = PREDICTION_API_RETRIES;
 
-            const response = await predictDiabetesForPatient(patientData);
+        while (retries)
+            try {
+                setLoadingPrediction(LoadingStatus.Pending)
 
-            setLoadingPrediction(LoadingStatus.Completed)
+                const response = await predictDiabetesForPatient(patientData);
 
-            if (response)
-                setPredictionResponse(response);
-        } catch (e) {
-            setLoadingPrediction(LoadingStatus.Failed);
-        }
+                setLoadingPrediction(LoadingStatus.Completed)
+
+                if (response)
+                    setPredictionResponse(response);
+                return;
+            } catch (e) {
+                setLoadingPrediction(LoadingStatus.Failed);
+            }
+
+        retries--;
+        //Wait 2 seconds before retrying request.
+        await new Promise((resolve) => setTimeout(resolve, 2000));
     }
 
     return (
