@@ -81,7 +81,7 @@ export default function Home() {
     })
 
     function _setPatientData(path: keyof IPredictPatientDiabetesRequestModel, value: number | string | null | undefined) {
-        const newValue = typeof value === "string" ? isNaN(+value) ? patientData[path] : +value : value;
+        const newValue = typeof value === "string" ? isNaN(+value) || +value < 0 ? patientData[path] : +value : value;
 
         setPatientData({ ...patientData, [path]: newValue });
     }
