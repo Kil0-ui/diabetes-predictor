@@ -1,14 +1,21 @@
 "use client"
 
-import { Button, Field, makeStyles, SpinButton, Spinner } from "@fluentui/react-components";
+import { Button, Field, makeStyles, MessageBar, MessageBarActions, MessageBarBody, MessageBarIntent, MessageBarTitle, SpinButton, Spinner } from "@fluentui/react-components";
 import { horizontalStack, pageWrapper, verticalStack } from "./styles";
 import { useMemo, useState } from "react";
 import IPredictPatientDiabetesRequestModel from "./api/models/predict-patient-diabetes.model";
 import LoadingStatus from "./api/LoadingStatus";
 import PredictPatientDiabetesResponse from "./api/models/predict-patient-diabetes-response.model";
 import { predictDiabetesForPatient } from "./api/machine-learning.api";
-import { DeleteRegular } from "@fluentui/react-icons";
+import { DeleteRegular, DismissRegular } from "@fluentui/react-icons";
 import ResultsCard from "./components/ResultsCard";
+import { title } from "process";
+
+const useClasses = makeStyles({
+    messageBar: {
+        width: "100%"
+    }
+})
 
 const useActionButtonStyles = makeStyles({
     root: {
@@ -52,6 +59,7 @@ function useRequiredValidation({ submit, validationItems }: { submit: () => unkn
 const PREDICTION_API_RETRIES = 5;
 
 export default function Home() {
+    const { messageBar } = useClasses();
     const [patientData, setPatientData] = useState<IPredictPatientDiabetesRequestModel>({
         pregnancies: 0,
         glucose: 0,
@@ -168,6 +176,12 @@ export default function Home() {
                     required
                 />
             </Field>
+            <MessageBar className={messageBar}>
+                <MessageBarBody className={messageBar}>
+                    <MessageBarTitle>Accuracy</MessageBarTitle>
+                    The accuracy of predictions is &gt; 70%.
+                </MessageBarBody>
+            </MessageBar>
             <div className={`${_horizontalStack.root} ${actionButtonStyles.root}`}>
                 <div className={_horizontalStack.root}>
                     <Button disabled={isLoadingPrediction} onClick={onSubmit} appearance="primary">Predict</Button>
@@ -186,6 +200,11 @@ export default function Home() {
                 </div>
             </div>
             {predictionResponse?.length && <ResultsCard clearPredictionResults={_clearPredictionResponse} results={predictionResponse[0]} />}
+            <iframe
+                src="https://kil0-ui.github.io/diabetes-predictor-notebook/lab/index.html?path=diabetes-prediction.ipynb"
+                width="100%"
+                height="500px"
+            />
         </div>
     );
 }

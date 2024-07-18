@@ -24,7 +24,6 @@ export const horizontalStack = makeStyles({
     root: {
         display: 'flex',
         flexDirection: 'row',
-        flexWrap: 'wrap',
         width: 'auto',
         height: 'auto',
         boxSizing: 'border-box',
@@ -42,6 +41,8 @@ export const horizontalStack = makeStyles({
 
 export const pageWrapper = makeStyles({
     root: {
-        padding: "10px"
+        padding: "10px",
+        flexGrow: 1,
+        overflowY: "auto",
     }
 })

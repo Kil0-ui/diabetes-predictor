@@ -4,7 +4,7 @@ import { DiabetesRisk } from "../api/models/predict-patient-diabetes-response.mo
 
 const useClasses = makeStyles({
     messageBar: {
-        flexGrow: 1
+        width: "100%"
     }
 })
 
