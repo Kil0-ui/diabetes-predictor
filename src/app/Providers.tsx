@@ -23,7 +23,7 @@ export function Providers({ children, theme }: { children: React.ReactNode, them
     return (
         <RendererProvider renderer={renderer || createDOMRenderer()}>
             <SSRProvider>
-                <FluentProvider style={{ overflowY: "hidden", display: "flex", flexGrow: 1, flexDirection: "column" }} theme={theme === "dark" ? webDarkTheme : webLightTheme}>
+                <FluentProvider style={{ overflow: "hidden", display: "flex", flexGrow: 1, flexDirection: "column" }} theme={theme === "dark" ? webDarkTheme : webLightTheme}>
                     {children}
                 </FluentProvider>
             </SSRProvider>

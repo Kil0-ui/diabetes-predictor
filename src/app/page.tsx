@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Field, makeStyles, MessageBar, MessageBarActions, MessageBarBody, MessageBarIntent, MessageBarTitle, SpinButton, Spinner } from "@fluentui/react-components";
+import { Button, Field, makeStyles, MessageBar, MessageBarActions, MessageBarBody, MessageBarIntent, MessageBarTitle, SelectTabData, SelectTabEvent, SpinButton, Spinner, Tab, TabList, TabValue } from "@fluentui/react-components";
 import { horizontalStack, pageWrapper, verticalStack } from "./styles";
 import { useMemo, useState } from "react";
 import IPredictPatientDiabetesRequestModel from "./api/models/predict-patient-diabetes.model";
@@ -60,6 +60,14 @@ const PREDICTION_API_RETRIES = 5;
 
 export default function Home() {
     const { messageBar } = useClasses();
+    const _verticalStack = verticalStack().root;
+
+    const [selectedTab, setSelectedTab] = useState<TabValue>("user-interface");
+
+    const onTabSelect = (_: SelectTabEvent, data: SelectTabData) => {
+        setSelectedTab(data.value);
+    };
+
     const [patientData, setPatientData] = useState<IPredictPatientDiabetesRequestModel>({
         pregnancies: 0,
         glucose: 0,
@@ -133,78 +141,86 @@ export default function Home() {
     }
 
     return (
-        <div className={`${verticalStack().root} ${pageWrapper().root}`}>
-            <Field label="Pregnancies">
-                <SpinButton
-                    onChange={(_, { value, displayValue }) => {
-                        _setPatientData("pregnancies", value ?? displayValue)
-                    }}
-                    value={patientData?.pregnancies ?? 0}
-                    min={0}
-                    max={30}
-                />
-            </Field>
-            <Field label="Glucose Level" validationMessage={errorFields.has("Glucose Level") ? "Glucose Level is a required field." : undefined} required>
-                <SpinButton
-                    onChange={(_, { value, displayValue }) => {
-                        _setPatientData("glucose", value ?? displayValue)
-                    }}
-                    value={patientData?.glucose ?? 0}
-                    min={0}
-                    max={500}
-                />
-            </Field>
-            <Field label="BMI (Body Mass Index)" validationMessage={errorFields.has("BMI (Body Mass Index)") ? "BMI (Body Mass Index) is a required field." : undefined} required>
-                <SpinButton
-                    onChange={(_, { value, displayValue }) => {
-                        _setPatientData("bmi", value ?? displayValue)
-                    }}
-                    value={patientData?.bmi ?? 0}
-                    precision={1}
-                    min={0}
-                    max={500}
-                />
-            </Field>
-            <Field label="Age" validationMessage={errorFields.has("Age") ? "Age is a required field." : undefined} required>
-                <SpinButton
-                    onChange={(_, { value, displayValue }) => {
-                        _setPatientData("age", value ?? displayValue)
-                    }}
-                    value={patientData?.age ?? 0}
-                    min={0}
-                    max={150}
-                    required
-                />
-            </Field>
-            <MessageBar className={messageBar}>
-                <MessageBarBody className={messageBar}>
-                    <MessageBarTitle>Accuracy</MessageBarTitle>
-                    The accuracy of predictions is &gt; 70%.
-                </MessageBarBody>
-            </MessageBar>
-            <div className={`${_horizontalStack.root} ${actionButtonStyles.root}`}>
-                <div className={_horizontalStack.root}>
-                    <Button disabled={isLoadingPrediction} onClick={onSubmit} appearance="primary">Predict</Button>
-                    {isLoadingPrediction && (
-                        <Spinner size="small" labelPosition="after" label="Loading Results..." />
-                    )}
+
+        <div className={`${_verticalStack} ${pageWrapper().root}`}>
+            <TabList selectedValue={selectedTab} onTabSelect={onTabSelect}>
+                <Tab value="user-interface">User Interface</Tab>
+                <Tab value="jupyter-notebook">Jupyter Notebook</Tab>
+            </TabList>
+            {selectedTab === "user-interface" ? <div className={_verticalStack}>
+                <Field label="Pregnancies">
+                    <SpinButton
+                        onChange={(_, { value, displayValue }) => {
+                            _setPatientData("pregnancies", value ?? displayValue)
+                        }}
+                        value={patientData?.pregnancies ?? 0}
+                        min={0}
+                        max={30}
+                    />
+                </Field>
+                <Field label="Glucose Level" validationMessage={errorFields.has("Glucose Level") ? "Glucose Level is a required field." : undefined} required>
+                    <SpinButton
+                        onChange={(_, { value, displayValue }) => {
+                            _setPatientData("glucose", value ?? displayValue)
+                        }}
+                        value={patientData?.glucose ?? 0}
+                        min={0}
+                        max={500}
+                    />
+                </Field>
+                <Field label="BMI (Body Mass Index)" validationMessage={errorFields.has("BMI (Body Mass Index)") ? "BMI (Body Mass Index) is a required field." : undefined} required>
+                    <SpinButton
+                        onChange={(_, { value, displayValue }) => {
+                            _setPatientData("bmi", value ?? displayValue)
+                        }}
+                        value={patientData?.bmi ?? 0}
+                        precision={1}
+                        min={0}
+                        max={500}
+                    />
+                </Field>
+                <Field label="Age" validationMessage={errorFields.has("Age") ? "Age is a required field." : undefined} required>
+                    <SpinButton
+                        onChange={(_, { value, displayValue }) => {
+                            _setPatientData("age", value ?? displayValue)
+                        }}
+                        value={patientData?.age ?? 0}
+                        min={0}
+                        max={150}
+                        required
+                    />
+                </Field>
+                <MessageBar className={messageBar}>
+                    <MessageBarBody className={messageBar}>
+                        <MessageBarTitle>Accuracy</MessageBarTitle>
+                        The accuracy of predictions is &gt; 70%.
+                    </MessageBarBody>
+                </MessageBar>
+                <div className={`${_horizontalStack.root} ${actionButtonStyles.root}`}>
+                    <div className={_horizontalStack.root}>
+                        <Button disabled={isLoadingPrediction} onClick={onSubmit} appearance="primary">Predict</Button>
+                        {isLoadingPrediction && (
+                            <Spinner size="small" labelPosition="after" label="Loading Results..." />
+                        )}
+                    </div>
+                    <div>
+                        <Button
+                            icon={<DeleteRegular />}
+                            disabled={isLoadingPrediction}
+                            onClick={_clearAllPatientData}
+                        >
+                            Clear All Information
+                        </Button>
+                    </div>
                 </div>
-                <div>
-                    <Button
-                        icon={<DeleteRegular />}
-                        disabled={isLoadingPrediction}
-                        onClick={_clearAllPatientData}
-                    >
-                        Clear All Information
-                    </Button>
-                </div>
-            </div>
-            {predictionResponse?.length && <ResultsCard clearPredictionResults={_clearPredictionResponse} results={predictionResponse[0]} />}
-            <iframe
+                {predictionResponse?.length && <ResultsCard clearPredictionResults={_clearPredictionResponse} results={predictionResponse[0]} />}
+            </div> : null}
+
+            {selectedTab === "jupyter-notebook" ? <iframe
                 src="https://kil0-ui.github.io/diabetes-predictor-notebook/lab/index.html?path=diabetes-prediction.ipynb"
                 width="100%"
-                height="500px"
-            />
+                height="100%"
+            /> : null}
         </div>
     );
 }

@@ -4,7 +4,6 @@ export const verticalStack = makeStyles({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        flexWrap: 'wrap',
         width: 'auto',
         height: 'auto',
         boxSizing: 'border-box',
@@ -44,5 +43,6 @@ export const pageWrapper = makeStyles({
         padding: "10px",
         flexGrow: 1,
         overflowY: "auto",
+        overflowX: "hidden",
     }
 })

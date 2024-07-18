@@ -15,3 +15,6 @@ body {
   flex-grow: 1;
 }
 
+iframe {
+    border-width: 0px;
+}
