@@ -192,8 +192,8 @@ export default function Home() {
                 </Field>
                 <MessageBar className={messageBar}>
                     <MessageBarBody className={messageBar}>
-                        <MessageBarTitle>Accuracy</MessageBarTitle>
-                        The accuracy of predictions is &gt; 70%.
+                        <MessageBarTitle>Accuracy:</MessageBarTitle>
+                        The accuracy of predictions is equal to or greater than 70%.
                     </MessageBarBody>
                 </MessageBar>
                 <div className={`${_horizontalStack.root} ${actionButtonStyles.root}`}>
