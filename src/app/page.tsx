@@ -1,15 +1,14 @@
 "use client"
 
-import { Button, Field, makeStyles, MessageBar, MessageBarActions, MessageBarBody, MessageBarIntent, MessageBarTitle, SelectTabData, SelectTabEvent, SpinButton, Spinner, Tab, TabList, TabValue } from "@fluentui/react-components";
+import { Button, Field, makeStyles, MessageBar, MessageBarBody, MessageBarTitle, SelectTabData, SelectTabEvent, SpinButton, Spinner, Tab, TabList, TabValue } from "@fluentui/react-components";
 import { horizontalStack, pageWrapper, verticalStack } from "./styles";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import IPredictPatientDiabetesRequestModel from "./api/models/predict-patient-diabetes.model";
 import LoadingStatus from "./api/LoadingStatus";
 import PredictPatientDiabetesResponse from "./api/models/predict-patient-diabetes-response.model";
 import { predictDiabetesForPatient } from "./api/machine-learning.api";
-import { DeleteRegular, DismissRegular } from "@fluentui/react-icons";
+import { DeleteRegular } from "@fluentui/react-icons";
 import ResultsCard from "./components/ResultsCard";
-import { title } from "process";
 
 const useClasses = makeStyles({
     messageBar: {
