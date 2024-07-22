@@ -216,7 +216,7 @@ export default function Home() {
             </div> : null}
 
             {selectedTab === "jupyter-notebook" ? <iframe
-                src="https://kil0-ui.github.io/diabetes-predictor-notebook/lab/index.html?path=diabetes-prediction-notebook-v5.ipynb"
+                src="https://kil0-ui.github.io/diabetes-predictor-notebook/lab/index.html?path=diabetes-prediction-notebook-v6.ipynb"
                 width="100%"
                 height="100%"
             /> : null}
